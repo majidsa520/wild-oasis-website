@@ -1,3 +1,4 @@
+import Logo from "./components/Logo";
 import Navigation from "./components/Navigation";
 
 export const metadata = {
@@ -10,6 +11,7 @@ export default function RootLayout({ children }) {
 		<html lang="en">
 			<body>
 				<header>
+					<Logo />
 					<Navigation />
 				</header>
 				<main>{children}</main>
