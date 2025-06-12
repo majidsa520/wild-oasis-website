@@ -1,3 +1,9 @@
+import Navigation from "./components/Navigation";
+
 export default function Page() {
-	return <h1>Hello world!</h1>;
+	return (
+		<div>
+			<h1>Welcome to wild oasis</h1>
+		</div>
+	);
 }
