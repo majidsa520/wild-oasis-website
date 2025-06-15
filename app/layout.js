@@ -1,5 +1,5 @@
-import Logo from "./components/Logo";
-import Navigation from "./components/Navigation";
+import Logo from "@/app/_components/Logo";
+import Navigation from "@/app/_components/Navigation"; // "@" represents root dir.
 
 export const metadata = {
 	title: "Wild Oasis",
