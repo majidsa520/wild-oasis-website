@@ -1,7 +1,9 @@
 import Logo from "@/app/_components/Logo";
 import Navigation from "@/app/_components/Navigation"; // "@" represents root dir.
-
+import "@/app/_styles/globals.css";
+import Header from "@/app/_components/Header";
 import { Josefin_Sans } from "next/font/google";
+
 const josefin = Josefin_Sans({
 	subsets: ["latin"],
 	display: "swap",
@@ -16,22 +18,17 @@ export const metadata = {
 	},
 	description: "rent hotels easily",
 };
-import "@/app/_styles/globals.css";
 
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body
-				className={`min-h-screen bg-primary-950 text-primary-100 ${josefin.className}`}
+				className={`flex flex-col gap-6 min-h-screen bg-primary-950 text-primary-100 ${josefin.className}`}
 			>
-				<header>
-					<Logo />
-					<Navigation />
-				</header>
-				<main>{children}</main>
-				<footer>
-					<h4>copy rights reserved</h4>
-				</footer>
+				<Header />
+				<div className="flex-1">
+					<main className="max-w-7xl mx-auto">{children}</main>
+				</div>
 			</body>
 		</html>
 	);
