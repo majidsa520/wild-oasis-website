@@ -2,14 +2,19 @@ import Logo from "@/app/_components/Logo";
 import Navigation from "@/app/_components/Navigation"; // "@" represents root dir.
 
 export const metadata = {
-	title: "Wild Oasis",
+	title: {
+		// %s stands for what you export from any page. If don't then it'll be default value
+		template: "%s | Wild Oasis",
+		default: "Welcome to Wild Oasis",
+	},
 	description: "rent hotels easily",
 };
+import "@/app/_styles/globals.css";
 
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
-			<body>
+			<body className="min-h-screen bg-primary-950 text-primary-100">
 				<header>
 					<Logo />
 					<Navigation />
