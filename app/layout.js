@@ -1,5 +1,4 @@
-import Logo from "@/app/_components/Logo";
-import Navigation from "@/app/_components/Navigation"; // "@" represents root dir.
+// "@" represents root dir.
 import "@/app/_styles/globals.css";
 import Header from "@/app/_components/Header";
 import { Josefin_Sans } from "next/font/google";
@@ -12,7 +11,7 @@ console.log(josefin);
 
 export const metadata = {
 	title: {
-		// %s stands for what you export from any page. If don't then it'll be default value
+		// %s stands for what you export from any page. If don't, then it'll be default value
 		template: "%s | Wild Oasis",
 		default: "Welcome to Wild Oasis",
 	},
