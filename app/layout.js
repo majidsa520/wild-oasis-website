@@ -7,7 +7,6 @@ const josefin = Josefin_Sans({
 	subsets: ["latin"],
 	display: "swap",
 });
-console.log(josefin);
 
 export const metadata = {
 	title: {
