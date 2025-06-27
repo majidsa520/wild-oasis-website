@@ -24,8 +24,8 @@ export default function RootLayout({ children }) {
 				className={`flex flex-col gap-6 min-h-screen bg-primary-950 text-primary-100 ${josefin.className}`}
 			>
 				<Header />
-				<div className="flex-1">
-					<main className="max-w-7xl mx-auto">{children}</main>
+				<div className="flex-1 px-8 grid">
+					<main className="max-w-7xl mx-auto w-full">{children}</main>
 				</div>
 			</body>
 		</html>
