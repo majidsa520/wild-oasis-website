@@ -11,6 +11,7 @@ const nextConfig = {
 			},
 		],
 	},
+	distDir: "@/out",
 };
 // https://ohxvrgskowfwbbgwjlvo.supabase.co/storage/v1/object/public/cabin-images/0.7254143805733573-Golden_buddha.jpg
 export default nextConfig;
