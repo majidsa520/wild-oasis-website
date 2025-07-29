@@ -1,7 +1,14 @@
 {
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./*"]
-    }
-  }
+	"compilerOptions": {
+		"paths": {
+			"@/*": ["./*"]
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"dist",
+		"build",
+		"**/test_data", // Excludes any 'test_data' folder within subdirectories
+		"legacy_codebase" // Excludes a specific large folder
+	]
 }
