@@ -1,5 +1,6 @@
-import { Suspense } from "react";
+import ReservationReminder from "@/app/_components/ReservationReminder";
 import Spinner from "@/app/_components/Spinner";
+import { Suspense } from "react";
 import CabinsList from "./CabinsList";
 
 export const metadata = {
@@ -22,6 +23,7 @@ export default function Page({ searchParams }) {
 			</p>
 			<Suspense fallback={<Spinner />} key={filter}>
 				<CabinsList filter={filter} />
+				<ReservationReminder />
 			</Suspense>
 		</div>
 	);
