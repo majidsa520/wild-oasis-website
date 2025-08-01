@@ -1,4 +1,8 @@
 {
+  "/page": "app/page.js",
+  "/cabins/page": "app/cabins/page.js",
+  "/icon.png/route": "app/icon.png/route.js",
   "/cabins/[cabinId]/page": "app/cabins/[cabinId]/page.js",
-  "/cabins/page": "app/cabins/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/account/page": "app/account/page.js"
 }
