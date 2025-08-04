@@ -52,12 +52,10 @@ export const getCabins = async function () {
 };
 
 // Guests are uniquely identified by their email address
-export async function getGuest(email) {
-	const { data, error } = await supabase
-		.from("guests")
-		.select("*")
-		.eq("email", email)
-		.single();
+export async function getGuest({ email, id }) {
+	const { data, error } = email
+		? await supabase.from("guests").select("*").eq("email", email).single()
+		: await supabase.from("guests").select("*").eq("id", id).single();
 
 	// No error here! We handle the possibility of no guest in the sign in callback
 	return data;
@@ -189,12 +187,12 @@ export async function updateGuest(id, updatedFields) {
 		.from("guests")
 		.update(updatedFields)
 		.eq("id", id)
-		.select()
+		.select("*")
 		.single();
 
 	if (error) {
 		console.error(error);
-		throw new Error("Guest could not be updated");
+		throw new Error(`Guest could not be updated: ${error.message}`);
 	}
 	return data;
 }

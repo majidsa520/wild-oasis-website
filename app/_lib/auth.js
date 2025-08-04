@@ -18,7 +18,7 @@ const authConfig = {
 			console.log(user);
 			// after the user puts in creds and before actuall sign in to site
 			try {
-				const guest = await getGuest(user.email);
+				const guest = await getGuest({ email: user.email });
 				if (!guest?.id)
 					await createGuest({ email: user.email, fullName: user.name });
 				return true;
@@ -28,7 +28,7 @@ const authConfig = {
 		},
 		async session({ session, user }) {
 			// runs after signIn() and provides session
-			const { id: guestId } = await getGuest(session.user.email);
+			const { id: guestId } = await getGuest({ email: session.user.email });
 			session.user.guestId = guestId;
 			return session;
 		},
