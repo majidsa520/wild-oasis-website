@@ -21,6 +21,7 @@
 		border: 2px solid theme("colors.primary.200");
 		border-right-color: transparent;
 		animation: rotate 1s infinite linear;
+		flex-grow: 0;
 	}
 
 	@keyframes rotate {
