@@ -1,7 +1,13 @@
 "use server";
 import { auth, signIn, signOut } from "./auth";
 import { AuthError } from "next-auth";
-import { deleteBooking, getBookings, updateGuest } from "./data-service";
+import {
+	deleteBooking,
+	getBooking,
+	getBookings,
+	updateBooking,
+	updateGuest,
+} from "./data-service";
 import { revalidatePath } from "next/cache";
 export async function signInAction() {
 	// we can get providers from auth url dynamically (/api/auth/providers)
@@ -49,4 +55,17 @@ export async function deleteBookingAction(bookingId) {
 	const data = await deleteBooking(bookingId);
 	revalidatePath("/account/reservation");
 	return data;
+}
+export async function updateBookingAction(formData) {
+	const observations = formData.get("observations");
+	const numGuests = formData.get("numGuests");
+	if (numGuests < 1) throw new Error("Number of guest cannot be 0");
+	const reservationId = formData.get("id");
+	const {
+		user: { guestId },
+	} = await auth();
+	const booking = await getBooking(reservationId);
+	if (booking.guestId !== guestId)
+		throw new Error("You don't have permission to do this.");
+	await updateBooking(reservationId, { numGuests, observations });
 }
