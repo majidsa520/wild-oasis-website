@@ -198,17 +198,13 @@ export async function updateGuest(id, updatedFields) {
 }
 
 export async function updateBooking(id, updatedFields) {
-	const { data, error } = await supabase
+	const result = await supabase
 		.from("bookings")
 		.update(updatedFields)
 		.eq("id", id)
-		.select();
-
-	if (error) {
-		console.error(error);
-		throw new Error(`Booking could not be updated: ${error}`);
-	}
-	return data;
+		.select()
+		.single();
+	return result;
 }
 
 /////////////

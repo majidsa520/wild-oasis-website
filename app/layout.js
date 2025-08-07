@@ -3,6 +3,7 @@ import "@/app/_styles/globals.css";
 import Header from "@/app/_components/Header";
 import { Josefin_Sans } from "next/font/google";
 import ReservationProvider from "./_components/ReservationContext";
+import { Toaster } from "react-hot-toast";
 
 const josefin = Josefin_Sans({
 	subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
 			<body
 				className={`flex flex-col gap-6 min-h-screen bg-primary-950 text-primary-100 ${josefin.className}`}
 			>
+				<Toaster position="top-center" />
 				<Header />
 				<div className="flex-1 px-8 grid">
 					<main className="max-w-7xl mx-auto w-full">

@@ -57,15 +57,21 @@ export async function deleteBookingAction(bookingId) {
 	return data;
 }
 export async function updateBookingAction(formData) {
-	const observations = formData.get("observations");
-	const numGuests = formData.get("numGuests");
-	if (numGuests < 1) throw new Error("Number of guest cannot be 0");
-	const reservationId = formData.get("id");
 	const {
 		user: { guestId },
-	} = await auth();
+	} = (await auth()) || {};
+	if (!guestId) throw new Error("You must login first");
+	const observations = formData.get("observations").slice(0, 1000);
+	const numGuests = formData.get("numGuests");
+	if (numGuests < 1) throw new Error("Number of guest cannot be 0");
+	const reservationId = Number(formData.get("id"));
 	const booking = await getBooking(reservationId);
 	if (booking.guestId !== guestId)
 		throw new Error("You don't have permission to do this.");
-	await updateBooking(reservationId, { numGuests, observations });
+	const result = await updateBooking(reservationId, {
+		numGuests,
+		observations,
+	});
+	//revalidatePath("/account/reservation");
+	return result;
 }
