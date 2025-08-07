@@ -4,11 +4,15 @@ import { deleteBookingAction } from "@/app/_lib/actions";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { useTransition } from "react";
 
-export default function DeleteReservation({ bookingId }) {
+export default function DeleteReservation({ bookingId, optimisticDelete }) {
 	const [pending, setTransition] = useTransition();
 	function handleDelete() {
-		if (confirm("Are you sure about deleting this booking?"))
-			setTransition(() => deleteBookingAction(bookingId));
+		if (confirm("Are you sure about deleting this booking?")) {
+			optimisticDelete(bookingId);
+			// setTransition(() => deleteBookingAction(bookingId));
+			// since we're using optimisticDelete, no need to use transition and show spinnig indicator
+			deleteBookingAction(bookingId);
+		}
 	}
 	return (
 		<button

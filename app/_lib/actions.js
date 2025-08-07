@@ -13,9 +13,8 @@ export async function signInAction() {
 	// we can get providers from auth url dynamically (/api/auth/providers)
 	try {
 		await signIn("google", { redirectTo: "/account" });
-		console.log("-----------------------------");
 	} catch (err) {
-		if (err instanceof AuthError) console.log("true");
+		// if (err instanceof AuthError) console.log("true");
 		throw err;
 	}
 }
