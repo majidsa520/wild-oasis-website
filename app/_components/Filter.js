@@ -4,7 +4,6 @@ export default function Filter({ filterOptions, setFilter, filterField }) {
 	const searchParams = useSearchParams();
 	const activeFilter =
 		searchParams.get(filterField) ?? filterOptions.at(0).value;
-	console.log(activeFilter);
 	return (
 		<ul className="flex items-center mb-4 border-primary-800 border-1 border">
 			{filterOptions.map((filterOption) => (

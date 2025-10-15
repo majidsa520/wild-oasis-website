@@ -1,11 +1,10 @@
+"use client";
 import CabinCard from "@/app/_components/CabinCard";
-import { getCabins } from "@/app/_lib/data-service";
+import { useSearchParams } from "next/navigation";
 import CabinFilter from "./CabinFilter";
 
-export default async function CabinsList({ filter }) {
-	const cabins = await getCabins();
-	// to deliberately add 4sec timeout to see what's heppening:
-	// await new Promise((resolve) => setTimeout(resolve, 4000));
+export default function CabinsList({ cabins }) {
+	const filter = useSearchParams().get("capacity") ?? "all";
 	let filteredCabins;
 	switch (filter) {
 		case "small":
