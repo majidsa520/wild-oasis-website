@@ -1,14 +1,18 @@
 "use server";
+import { z } from "zod";
 import { auth, signIn, signOut } from "./auth";
-import { AuthError } from "next-auth";
+// import { AuthError } from "next-auth";
+import { revalidatePath } from "next/cache";
 import {
 	deleteBooking,
 	getBooking,
 	getBookings,
+	getCabin,
+	getSettings,
 	updateBooking,
 	updateGuest,
 } from "./data-service";
-import { revalidatePath } from "next/cache";
+import { supabase } from "./supabase";
 export async function signInAction() {
 	// we can get providers from auth url dynamically (/api/auth/providers)
 	try {
@@ -73,4 +77,60 @@ export async function updateBookingAction(formData) {
 	});
 	//revalidatePath("/account/reservation");
 	return result;
+}
+export async function createBookingAction(formData, formPasiveData) {
+	// getting data from database
+	const session = await auth();
+	const guestId = session?.user?.guestId || null;
+	if (!guestId) throw new Error("You must login first");
+	const data = {
+		...formPasiveData,
+		...Object.fromEntries(formData.entries()),
+		guestId,
+	};
+	const [cabin, settings] = await Promise.all([
+		getCabin(data.cabinId),
+		getSettings(),
+	]);
+
+	// defining form schema
+	const formSchema = z.object({
+		guestId: z.coerce.number().int().min(1),
+		numNights: z.coerce
+			.number()
+			.int()
+			.min(settings.minBookingLength)
+			.max(settings.maxBookingLength),
+		numGuests: z.coerce.number().int().min(1),
+		cabinPrice: z.coerce.number().min(0),
+		extrasPrice: z.coerce.number().min(0),
+		totalPrice: z.coerce.number().min(0),
+		status: z.union([
+			z.literal("checked-in"),
+			z.literal("checked-out"),
+			z.literal("unconfirmed"),
+		]),
+		hasBreakfast: z.boolean(),
+		isPaid: z.boolean(),
+		observations: z.string(),
+		cabinId: z.number(),
+	});
+	// validating data
+	const parsedData = formSchema.safeParse(data);
+	console.log(parsedData);
+	if (!parsedData.success) throw new Error("data mismatch");
+	if (
+		!parsedData.cabinPrice ===
+		parsedData.numNight * (cabin.regularPrice - cabin.discount)
+	)
+		throw new Error("data mismatch");
+
+	const response = await supabase
+		.from("bookings")
+		.insert([data])
+		// So that the newly created object gets returned!
+		.select()
+		.single();
+	revalidatePath(`/cabins/${cabin.id}`);
+	return response;
 }

@@ -1,12 +1,44 @@
 "use client";
 
+import { differenceInDays } from "date-fns";
 import { useReservation } from "./ReservationContext";
+import { createBookingAction } from "@/app/_lib/actions";
+import toast from "react-hot-toast";
 
 function ReservationForm({ cabin, user }) {
 	// CHANGE
-	const { maxCapacity } = cabin;
+	const { id, maxCapacity, discount, regularPrice } = cabin;
 	const { range, setRange } = useReservation();
+	const startDate = range.from;
+	const endDate = range.to;
+	console.log(range.from, range.to);
+	const numNights = differenceInDays(endDate, startDate);
+	const cabinPrice = numNights * (regularPrice - discount);
+	const totalPrice = cabinPrice;
+	const formPassiveData = {
+		startDate,
+		endDate,
+		cabinId: id,
+		numNights,
+		cabinPrice,
+		totalPrice,
+		extrasPrice: 0,
+		status: "unconfirmed",
+		hasBreakfast: false,
+		isPaid: false,
+	};
+	async function handleSubmit(formData) {
+		if (!range.from || !range.to) {
+			toast.error("please select a date first");
+			return;
+		}
+		const response = await createBookingAction(formData, formPassiveData);
 
+		if (response.error) toast.error(`something went wrong`);
+		else {
+			toast.success("You have successfully booked in");
+		}
+	}
 	return (
 		<div className="scale-[1.01]">
 			<div className="bg-primary-800 text-primary-300 px-16 py-2 flex justify-between items-center">
@@ -30,7 +62,10 @@ function ReservationForm({ cabin, user }) {
 				</p>
 			)} */}
 
-			<form className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col">
+			<form
+				className="bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col"
+				action={handleSubmit}
+			>
 				<div className="space-y-2">
 					<label htmlFor="numGuests">How many guests?</label>
 					<select
